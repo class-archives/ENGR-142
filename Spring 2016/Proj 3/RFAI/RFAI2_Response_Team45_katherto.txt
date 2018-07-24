@@ -1,0 +1,14 @@
+RFAI 2 Response
+
+Dear Team 45,
+
+Please find the response to your request for additional information below.
+
+Kind regards,
+The Project Oversight Team
+
+Q: Will the magnets in the beacon interfere with the compass sensors?
+A: It is possible.  This is one of the reasons that Harris does not recomment the use of the compass sensor.
+
+Q: What is the size of the drop-off locations?
+A: Please see the provided ALV specification document for clarification on antenna drop-off.

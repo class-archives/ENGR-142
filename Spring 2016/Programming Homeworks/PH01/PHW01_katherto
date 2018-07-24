@@ -1,0 +1,97 @@
+% Activity: Programming Homework 01
+% File: PH01_katherto.m
+% Date: 13 March 2016
+% By: Kathryn Atherton
+% katherto
+% Section: 04
+% Team: 59
+%
+% ELECTRONIC SIGNATURE
+% Kathryn Atherton
+%
+% The electronic signature above indicates that the script
+% submitted for evaluation is my individual work. I
+% have a general understanding of all aspects of its
+% development and execution.
+%
+% A BRIEF DESCRIPTION OF WHAT THE SCRIPT OR FUNCTION DOES
+% This program takes an input of a file name, takes the 
+% entries of the file (x, y, z coordinates), and finds their
+% distance from the origin, finds the decibel level of the 
+% coordinates based on the distance, and outputs the coordinates,
+% whether or not they are in the range of available coordinates,
+% their distance from the origin, the decibel level, and whether
+% or not the point needs sound amplification due to the decibel 
+% level being too low (below 60). Finally, it outputs the number
+% of seats analyzed.
+
+% clear the command window of all previous commands and variables
+clc
+clear
+
+
+%% MAIN PROGRAM 
+% input the file name 
+filename = input('Enter the name of the file containing the seat coordinate data:', 's');
+
+% open the file
+fid = fopen(filename);
+
+% set the number of seats analyzed to 0
+numSeats = 0;
+
+% save seat coordinates in matrix
+seats = csvread(filename);
+
+% close file
+fclose('all');
+
+size = size(seats);
+
+entry = 1;
+
+% testing for the end of file, looping through variables
+while entry <= size(1)
+	% increase the number of seats analyzed
+	numSeats = numSeats + 1;
+	
+	% read the data
+	xcoord = seats(numSeats, 1);
+	ycoord = seats(numSeats, 2);
+	zcoord = seats(numSeats, 3);
+	
+	% check for error saving the values
+	if ((isnumeric(xcoord) == 0) || (isnumeric(ycoord) == 0) || (isnumeric(zcoord) == 0))
+		error('Error saving values of seat #%d.\n', numSeats);
+	end
+	
+	%find the distance between the center of the stage and the seat
+	d = ((xcoord ^ 2) + (ycoord ^ 2) + (zcoord ^ 2)) ^ (1 / 2);
+	
+	% find decibel level at the seat
+	dB = (10 * log(10)) * (1 / (d ^ 2)) + 100;
+	
+	% output the seat coordinates
+	fprintf('\nSeat #%d: \n', numSeats)
+	
+	% check to see if seat coordinates are inside the opera house
+	if (((xcoord >= 0) && (xcoord <= 175)) && ((ycoord >= -30) && (ycoord <= 30)) && ((zcoord >= 0) && (zcoord <= 50)))	
+		fprintf('Seat coordinates: %d, %d, %d\n', xcoord, ycoord, zcoord)
+        fprintf('Distance from origin: %.2f\n', d)
+		fprintf('Decibel level at seat: %.2f\n', dB)
+		% check to see if decibel level is below 60
+		if (dB < 60)
+			fprintf('Decibel level is too low: must be amplified.\n')
+        else
+            fprintf('Decibel level is sufficient.\n')
+        end
+		
+	else
+		fprintf('Seat coordinates are outside the range of available seating.\n')
+    end
+    
+    entry = entry + 1;
+end
+
+% output the number of seats analyzed
+fprintf('\nTotal number of seats analyzed: %d\n\n', numSeats)
